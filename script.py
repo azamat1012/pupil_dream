@@ -5,9 +5,8 @@ from datacenter.models import *
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 
 
-# Функция для улучшения плохих оценок
-exec("""
 def improve_grades():
+    """Функция для улучшения плохих оценок""" 
     me = Schoolkid.objects.filter(full_name__contains="Фролов Иван")
     marks = Mark.objects.filter(schoolkid__full_name__contains=me)
     for mark in marks:
@@ -15,20 +14,18 @@ def improve_grades():
         if improved_grade < 4:
             improved_grade = 4
             improved_grade.save()
-""")
 
 
-# Функция для удаления замечаний
-exec("""
+
 def delete_all_chastisements(name):
+    """Функция для удаления замечаний"""
+    
     Chastisement.objects.filter(schoolkid__full_name__contains=name).delete()
-""")
 
-# Функция для создания похвал
-exec("""
+
 def create_commendation(student_name, subject_title):
-
-     
+    """Функция для создания похвал"""
+    
     try:
         student = Schoolkid.objects.get(full_name__icontains=student_name)
     except ObjectDoesNotExist:
@@ -72,4 +69,3 @@ def create_commendation(student_name, subject_title):
         teacher=last_lesson.teacher
     )
 
-""")
