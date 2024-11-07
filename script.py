@@ -1,7 +1,7 @@
 import random
 from datetime import datetime
 
-from datacenter.models import Schoolkid, Mark, Chastisement, Commendation,Lesson
+from datacenter.models import Schoolkid, Mark, Chastisement, Commendation,Lesson, Subject
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 
 
@@ -24,7 +24,7 @@ def improve_grades(name):
 
 def delete_all_chastisements(name):
     """Функция для удаления замечаний"""
-    Chastisement.objects.get(
+    Chastisement.objects.filter(
         schoolkid__full_name__icontains=name).delete()
 
 
