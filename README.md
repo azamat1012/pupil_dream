@@ -10,7 +10,7 @@
 - Далее Вам необходимо внести все импорты и функции из скрипта. Для этого Вам нужно написать следующий код в уже открывшемся терминале:
 
 ```plaintext
-from script import *
+from script import improve_grades, delete_all_chastisements, create_commendation
 ```
 
 - Дальше осталось воспользоваться магией скрипта :)
@@ -24,7 +24,7 @@ from script import *
 Чтобы запустить данный скрипт просто вставьте в Вашем запущенном Джанго терминал данный код и перезапустите сервер
 
 ```plaintext
-    improve_grades()
+    improve_grades("Иванов Иван Иванович")
 ```
 
 ## def delete_all_chastisements(name)
