@@ -12,15 +12,11 @@ def get_student_by_name(name):
         return f"Найдено несколько учеников с именем '{name}'. Уточните имя."
 
 def improve_grades(name):
-    """Функция для улучшения плохих оценок."""
+    """Функция для массового улучшения плохих оценок."""
     student = get_student_by_name(name)
     if isinstance(student, str):
-        return student  # Возвращаем сообщение об ошибке
-    
-    marks = Mark.objects.filter(schoolkid=student, points__lt=4)
-    for mark in marks:
-        mark.points = 4
-        mark.save()
+        return student  
+    updated_count = Mark.objects.filter(schoolkid=student, points__lt=4).update(points=4)
 
 def delete_all_chastisements(name):
     """Функция для удаления замечаний."""
