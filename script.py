@@ -1,7 +1,7 @@
 import random
 from datetime import datetime
 
-from datacenter.models import *
+from datacenter.models import Schoolkid, Mark, Chastisement, Commendation,Lesson
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
 
 
