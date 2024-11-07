@@ -1,53 +1,50 @@
-import random
-from datetime import datetime
-
-from datacenter.models import Schoolkid, Mark, Chastisement, Commendation,Lesson, Subject
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
+from datacenter.models import Schoolkid, Mark, Chastisement, Commendation, Lesson, Subject
+import random
 
-
-def improve_grades(name):
-    """Функция для улучшения плохих оценок"""
+def get_student_by_name(name):
+    """Получение объекта школьника по имени."""
     try:
-        student = Schoolkid.objects.get(full_name__icontains=name)
-        marks = Mark.objects.filter(schoolkid=student)
-
-        for mark in marks:
-            if mark.points < 4:
-                mark.points = 4
-                mark.save()
-
+        return Schoolkid.objects.get(full_name__icontains=name)
     except ObjectDoesNotExist:
         return f"Ученик с именем '{name}' не найден."
     except MultipleObjectsReturned:
         return f"Найдено несколько учеников с именем '{name}'. Уточните имя."
 
+def improve_grades(name):
+    """Функция для улучшения плохих оценок."""
+    student = get_student_by_name(name)
+    if isinstance(student, str):
+        return student  # Возвращаем сообщение об ошибке
+    
+    marks = Mark.objects.filter(schoolkid=student, points__lt=4)
+    for mark in marks:
+        mark.points = 4
+        mark.save()
 
 def delete_all_chastisements(name):
-    """Функция для удаления замечаний"""
-    Chastisement.objects.filter(
-        schoolkid__full_name__icontains=name).delete()
-
+    """Функция для удаления замечаний."""
+    student = get_student_by_name(name)
+    if isinstance(student, str):
+        return student  # Возвращаем сообщение об ошибке
+    
+    Chastisement.objects.filter(schoolkid=student).delete()
 
 def create_commendation(student_name, subject_title):
-    """Функция для создания похвал"""
-
-    try:
-        student = Schoolkid.objects.get(full_name__icontains=student_name)
-    except ObjectDoesNotExist:
-        return f"Ученик с именем '{student_name}' не найден."
-
-    except MultipleObjectsReturned:
-        return f"Найдено несколько учеников с именем '{student_name}'. Уточните имя."
-
+    """Функция для создания похвал."""
+    student = get_student_by_name(student_name)
+    if isinstance(student, str):
+        return student  # Возвращаем сообщение об ошибке
+    
     try:
         subject = Subject.objects.get(
-            title=subject_title, year_of_study=student.year_of_study)
+            title=subject_title, year_of_study=student.year_of_study
+        )
     except ObjectDoesNotExist:
         return f"Предмет '{subject_title}' не найден для ученика."
-
     except MultipleObjectsReturned:
         return f"Найдено несколько записей для предмета '{subject_title}'. Уточните запрос."
-
+    
     last_lesson = Lesson.objects.filter(
         year_of_study=student.year_of_study,
         group_letter=student.group_letter,
@@ -56,7 +53,7 @@ def create_commendation(student_name, subject_title):
 
     if not last_lesson:
         return "Занятие по данному предмету не найдено."
-
+    
     commendations = [
         "Молодец!", "Отлично!", "Ты сделал это!", "Горжусь тобой!",
         "Продолжай в том же духе!", "Ты на верном пути!"
@@ -69,3 +66,5 @@ def create_commendation(student_name, subject_title):
         subject=subject,
         teacher=last_lesson.teacher
     )
+
+    
