@@ -22,7 +22,7 @@ def delete_all_chastisements(name):
     """Функция для удаления замечаний."""
     student = get_student_by_name(name)
     if isinstance(student, str):
-        return student  # Возвращаем сообщение об ошибке
+        return student 
     
     Chastisement.objects.filter(schoolkid=student).delete()
 
@@ -30,7 +30,7 @@ def create_commendation(student_name, subject_title):
     """Функция для создания похвал."""
     student = get_student_by_name(student_name)
     if isinstance(student, str):
-        return student  # Возвращаем сообщение об ошибке
+        return student 
     
     try:
         subject = Subject.objects.get(
