@@ -6,9 +6,9 @@ def get_student_by_name(name):
     """Получение объекта школьника по имени."""
     try:
         return Schoolkid.objects.get(full_name__icontains=name)
-    except ObjectDoesNotExist:
+    except Schoolkid.ObjectDoesNotExist:
         return f"Ученик с именем '{name}' не найден."
-    except MultipleObjectsReturned:
+    except Schoolkid.MultipleObjectsReturned:
         return f"Найдено несколько учеников с именем '{name}'. Уточните имя."
 
 def improve_grades(name):
@@ -36,9 +36,9 @@ def create_commendation(student_name, subject_title):
         subject = Subject.objects.get(
             title=subject_title, year_of_study=student.year_of_study
         )
-    except ObjectDoesNotExist:
+     except Subject.ObjectDoesNotExist:
         return f"Предмет '{subject_title}' не найден для ученика."
-    except MultipleObjectsReturned:
+    except Subject.MultipleObjectsReturned:
         return f"Найдено несколько записей для предмета '{subject_title}'. Уточните запрос."
     
     last_lesson = Lesson.objects.filter(
