@@ -6,10 +6,10 @@ def get_student_by_name(name):
     """Получение объекта школьника по имени."""
     try:
         return Schoolkid.objects.get(full_name__icontains=name)
-    except Schoolkid.ObjectDoesNotExist:
-        return f"Ученик с именем '{name}' не найден."
+    except Schoolkid.DoesNotExist:
+        raise Schoolkid.DoesNotExist(f"Ученик с именем '{name}' не найден.")
     except Schoolkid.MultipleObjectsReturned:
-        return f"Найдено несколько учеников с именем '{name}'. Уточните имя."
+        raise Schoolkid.MultipleObjectsReturned(f"Найдено несколько учеников с именем '{name}'. Уточните имя.")
 
 def improve_grades(name):
     """Функция для массового улучшения плохих оценок."""
