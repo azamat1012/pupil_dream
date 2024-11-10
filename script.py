@@ -14,7 +14,7 @@ def get_student_by_name(name):
 def improve_grades(name):
     """Функция для массового улучшения плохих оценок."""
     student = get_student_by_name(name)
-    updated_count = Mark.objects.filter(schoolkid=student, points__lt=4).update(points=4)
+    Mark.objects.filter(schoolkid=student, points__lt=4).update(points=4)
 
 def delete_all_chastisements(name):
     """Функция для удаления замечаний."""
